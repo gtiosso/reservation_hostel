@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 import model.entities.Reservation;
+import model.exceptions.DomainException;
 
 public class Program {
 
@@ -29,7 +30,7 @@ public class Program {
 			Date checkOut = sdf.parse(sc.nextLine());
 			
 			Reservation reservation = new Reservation(roomNumber, checkIn, checkOut);
-			System.out.println(reservation);
+			System.out.println("Reservation: " + reservation);
 			
 			System.out.println();
 			System.out.println("Enter data to update the reservation:");
@@ -39,14 +40,14 @@ public class Program {
 			checkOut = sdf.parse(sc.nextLine());
 		
 			reservation.updateDates(checkIn, checkOut);
-			System.out.println(reservation);
+			System.out.println("Reservation: " + reservation);
 		} 
 		// Capturando exceções do tipo "ParseException"
 		catch (ParseException e) {
 			System.out.println("Invalid Date Informed!" + e.getMessage());
 		}
-		// Capturando exceções do tipo "IllegalArgumentException" -> Instanciada no objeto Reservation
-		catch (IllegalArgumentException e) {
+		// Capturando exceções do tipo "DomainException" -> Instanciada no objeto Reservation
+		catch (DomainException e) {
 			System.out.println("Error in reservation: " + e.getMessage());
 		}
 		// Finalmente em caso de sucesso ou insucesso, fechando o Scanner

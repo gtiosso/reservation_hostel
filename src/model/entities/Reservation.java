@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import model.exceptions.DomainException;
+
 public class Reservation {
 	
 	private static SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -15,7 +17,12 @@ public class Reservation {
 	public Reservation() {
 	}
 
-	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) {
+	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) throws DomainException {
+		// Instanciando a Exception "DomainException" e passando a string como argumento
+		// A operação abaixo lançará uma exceção, caso não passe na validação
+		if (!checkOut.after(checkIn)) {
+			throw new DomainException("Check-out date must be after chek-in date");
+		}
 		this.roomNumber = roomNumber;
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
@@ -44,15 +51,19 @@ public class Reservation {
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
-	public void updateDates(Date checkIn, Date checkOut) {
+	// Adicionando o thrown para permitir que o metodo possa lançar exceções
+	// Pois a exceção não será tratada neste metodo
+	public void updateDates(Date checkIn, Date checkOut) throws DomainException {
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
-			// Instanciando a Exception "IllegalArgumentException" para tratamento de argumentos inválidos
-			throw new IllegalArgumentException("Reservation dates for update must be future dates");
+			// Instanciando a Exception "DomainException" e passando a string como argumento
+			// A operação abaixo lançará uma exceção
+			throw new DomainException("Reservation dates for update must be future dates");
 		}
 		if (!checkOut.after(checkIn)) {
-			// Instanciando a Exception "IllegalArgumentException" para tratamento de argumentos inválidos
-			throw new IllegalArgumentException("Check-out date must be after chek-in date");
+			// Instanciando a Exception "DomainException" e passando a string como argumento
+			// A operação abaixo lançará uma exceção
+			throw new DomainException("Check-out date must be after chek-in date");
 		}
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
