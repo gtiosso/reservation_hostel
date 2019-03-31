@@ -17,7 +17,7 @@ public class Reservation {
 	public Reservation() {
 	}
 
-	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) throws DomainException {
+	public Reservation(Integer roomNumber, Date checkIn, Date checkOut) {
 		// Instanciando a Exception "DomainException" e passando a string como argumento
 		// A operação abaixo lançará uma exceção, caso não passe na validação
 		if (!checkOut.after(checkIn)) {
@@ -51,9 +51,8 @@ public class Reservation {
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
-	// Adicionando o thrown para permitir que o metodo possa lançar exceções
-	// Pois a exceção não será tratada neste metodo
-	public void updateDates(Date checkIn, Date checkOut) throws DomainException {
+	// Utiliznando a Classe RuntimeException não há necessidade de propagar a tratativa das exceçõe no metodo
+	public void updateDates(Date checkIn, Date checkOut) {
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
 			// Instanciando a Exception "DomainException" e passando a string como argumento

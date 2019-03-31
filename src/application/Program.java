@@ -50,6 +50,11 @@ public class Program {
 		catch (DomainException e) {
 			System.out.println("Error in reservation: " + e.getMessage());
 		}
+		// Tratando todas as outras exceções, através de UPCASTING para a Classe RuntimeException
+		// Criando um erro genérico
+		catch (RuntimeException e) {
+			System.out.println("Unexpected Error: ");
+		}
 		// Finalmente em caso de sucesso ou insucesso, fechando o Scanner
 		finally {
 			sc.close();	
