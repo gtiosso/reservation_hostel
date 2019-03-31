@@ -1,6 +1,6 @@
-// Solução para tratamento de exeções
-// Delegando a tratativa de validação da reserva para a classe Reservation e retornando uma string com a mensagem de erro
-// Ruim
+// Solução para tratamento de exceções
+// Tratando todas as exceções e validações atraves de Exceptions (Nativas e Customizadas)
+// Boa
 
 package application;
 
@@ -18,21 +18,18 @@ public class Program {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 		Scanner sc = new Scanner(System.in);
 		
-		System.out.print("Room number: ");
-		int roomNumber = sc.nextInt();
-		System.out.print("Check-in date (dd/MM/yyyy): ");
-		sc.nextLine();
-		Date checkIn = sdf.parse(sc.nextLine());
-		System.out.print("Check-out date (dd/MM/yyyy): ");
-		Date checkOut = sdf.parse(sc.nextLine());
-		
-		if (!checkOut.after(checkIn)) {
-			System.out.println("Error in reservation: Check-out date must be after chek-in date");
-		}
-		else {
+		// Iniciando um bloco Try-Catch
+		try {
+			System.out.print("Room number: ");
+			int roomNumber = sc.nextInt();
+			System.out.print("Check-in date (dd/MM/yyyy): ");
+			sc.nextLine();
+			Date checkIn = sdf.parse(sc.nextLine());
+			System.out.print("Check-out date (dd/MM/yyyy): ");
+			Date checkOut = sdf.parse(sc.nextLine());
+			
 			Reservation reservation = new Reservation(roomNumber, checkIn, checkOut);
 			System.out.println(reservation);
-		
 			
 			System.out.println();
 			System.out.println("Enter data to update the reservation:");
@@ -41,18 +38,20 @@ public class Program {
 			System.out.print("Check-out date (dd/MM/yyyy): ");
 			checkOut = sdf.parse(sc.nextLine());
 		
-			String error = reservation.updateDates(checkIn, checkOut);
-			if (error != null) {
-				System.out.println("Error in reservation: " + error);
-			}
-			else {
-				System.out.println(reservation);
-			}
-			
+			reservation.updateDates(checkIn, checkOut);
+			System.out.println(reservation);
+		} 
+		// Capturando exceções do tipo "ParseException"
+		catch (ParseException e) {
+			System.out.println("Invalid Date Informed!" + e.getMessage());
 		}
-			
-		sc.close();
-		
+		// Capturando exceções do tipo "IllegalArgumentException" -> Instanciada no objeto Reservation
+		catch (IllegalArgumentException e) {
+			System.out.println("Error in reservation: " + e.getMessage());
+		}
+		// Finalmente em caso de sucesso ou insucesso, fechando o Scanner
+		finally {
+			sc.close();	
+		}
 	}
-
 }

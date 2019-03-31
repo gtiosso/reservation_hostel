@@ -38,21 +38,24 @@ public class Reservation {
 	}
 	
 	public long duration() {
+		// Obtendo a diferença em milesegundos das datas informadas (checkIn e checkOut)
 		long diff = checkOut.getTime() - checkIn.getTime();
+		// Convertendo em dias os milesegundos armazenados na variável diff
 		return TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
 	}
 	
-	public String updateDates(Date checkIn, Date checkOut) {
+	public void updateDates(Date checkIn, Date checkOut) {
 		Date now = new Date();
 		if (checkIn.before(now) || checkOut.before(now)) {
-			return "Reservation dates for update must be future dates";
+			// Instanciando a Exception "IllegalArgumentException" para tratamento de argumentos inválidos
+			throw new IllegalArgumentException("Reservation dates for update must be future dates");
 		}
 		if (!checkOut.after(checkIn)) {
-			return "Check-out date must be after chek-in date";
+			// Instanciando a Exception "IllegalArgumentException" para tratamento de argumentos inválidos
+			throw new IllegalArgumentException("Check-out date must be after chek-in date");
 		}
 		this.checkIn = checkIn;
 		this.checkOut = checkOut;
-		return null;
 	}
 	
 	@Override
@@ -66,7 +69,6 @@ public class Reservation {
 				+ ", "
 				+ duration()
 				+ " nights";
-				
 				
 	}
 
